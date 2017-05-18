@@ -5,7 +5,8 @@ libBasicUsageEnvironment_LIB_SUFFIX = $(LIB_SUFFIX)
 libUsageEnvironment_LIB_SUFFIX = $(LIB_SUFFIX)
 libgroupsock_LIB_SUFFIX = $(LIB_SUFFIX)
 ##### Change the following for your environment:
-CROSS_COMPILE?=		/opt/usr/local/arm/4.3.2/bin/arm-linux-
+#CROSS_COMPILE?=		/opt/usr/local/arm/4.3.2/bin/arm-linux-
+CROSS_COMPILE=
 COMPILE_OPTS =		$(INCLUDES) -I. -O2 -DSOCKLEN_T=socklen_t -DNO_SSTREAM=1 -D_LARGEFILE_SOURCE=1 -D_FILE_OFFSET_BITS=64
 C =			c
 C_COMPILER =		$(CROSS_COMPILE)gcc
@@ -49,10 +50,10 @@ GROUPSOCK_DIR = ../groupsock
 GROUPSOCK_LIB = $(GROUPSOCK_DIR)/libgroupsock.$(libgroupsock_LIB_SUFFIX)
 LOCAL_LIBS =	$(LIVEMEDIA_LIB) $(GROUPSOCK_LIB) \
 		$(BASIC_USAGE_ENVIRONMENT_LIB) $(USAGE_ENVIRONMENT_LIB)
-LIBS =			$(LOCAL_LIBS) $(LIBS_FOR_CONSOLE_APPLICATION) -lpthread 
+LIBS =			 $(LIBS_FOR_CONSOLE_APPLICATION) -lpthread -lliveMedia -lgroupsock -lBasicUsageEnvironment -lUsageEnvironment
 
-testH264VideoStreamer$(EXE):	$(PROJECT_OBJS) $(LOCAL_LIBS)
-	$(LINK)$@ $(CONSOLE_LINK_OPTS) $(PROJECT_OBJS) ./x264/libx264.a $(LIBS)
+testH264VideoStreamer$(EXE):	$(PROJECT_OBJS)
+	$(LINK)$@ $(CONSOLE_LINK_OPTS) $(PROJECT_OBJS) -lx264 $(LIBS)
 
 clean:
 	-rm -rf *.$(OBJ) $(ALL) core *.core *~ include/*~
